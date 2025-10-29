@@ -18,9 +18,9 @@ class Auth {
             'user_id' => $_SESSION['user_id'] ?? null,
             'username' => $_SESSION['username'] ?? null,
             'email' => $_SESSION['email'] ?? null,
-            'role' => $_SESSION['role'] ?? null
+            'role' => $_SESSION['role'] ?? null,
             'full_name' => $_SESSION['full_name'] ?? null
-        ]
+        ];
     }
 
     public static function hasRole($role) {
@@ -32,7 +32,7 @@ class Auth {
 
     public static function requireLogin() {
         if (!self::isLoggedIn()) {
-            $SESSION['redirect_url'] = $_SERVER['REQUEST_URI'];
+            $_SESSION['redirect_url'] = $_SERVER['REQUEST_URI'];
             header('Location: ' . BASE_URL . '/login');
             exit();
         }
@@ -47,7 +47,7 @@ class Auth {
     public static function requireRole($role) {
         self::requireLogin();
         if (!self::hasRole($role)) {
-            $SESSION['error'] = 'Access denied. Insufficient permissions';
+            $_SESSION['error'] = 'Access denied. Insufficient permissions';
             self::redirectToDashboard();
         }
     }
@@ -74,7 +74,7 @@ class Auth {
     }
 
     public static function login($userData) {
-        $SESSION['user_id'] = $userData['user_id'];
+        $_SESSION['user_id'] = $userData['user_id'];
         $SESSION['username'] = $userData['username'];
         $SESSION['email'] = $userData['email'];
         $SESSION['role'] = $userData['role'];

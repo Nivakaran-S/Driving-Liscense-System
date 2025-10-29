@@ -19,6 +19,9 @@ class User {
             $this->db->bind(':full_name', $data['full_name']);
             $this->db->bind(':phone', $data['phone']);
 
+            $this->db->query("INSERT INTO driver_profiles (user_id, date_of_birth, address, city, postal_code, national_id, license_type) 
+                  VALUES (:user_id, :dob, :address, :city, :postal_code, :national_id, :license_type)");
+                  
             $this->db->execute();
             $userId = $this->db->lastInsertId();
 

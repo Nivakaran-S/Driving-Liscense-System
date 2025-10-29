@@ -65,7 +65,7 @@ class Application {
 
     public function getByReferenceId($referenceId) {
         $this->db->query('SELECT a.*, u.full_name, u.email
-                          FROM application a
+                          FROM applications a
                           JOIN users u ON a.user_id = u.user_id 
                           WHERE a.reference_id = :ref_id');
         $this->db->bind(':ref_id', $referenceId);

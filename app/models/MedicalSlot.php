@@ -3,7 +3,7 @@
 class MedicalSlot {
     private $db;
 
-    public function __contruct() {
+    public function __construct() {
         $this->db = new Database();
     }
 
