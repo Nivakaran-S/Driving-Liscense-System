@@ -125,8 +125,8 @@ include APP_ROOT . '/views/layouts/header.php';
                                                 </span>
                                             </td>
                                             <td>
-                                                <a href="<?php echo BASE_URL; ?>/driving/view/<?php echo $eval['evaluation_id']; ?>" 
-                                                   class="btn btn-sm btn-outline-primary">
+                                               <a href="<?php echo BASE_URL; ?>/driving/viewEvaluation/<?php echo $eval['evaluation_id']; ?>" 
+                                                    class="btn btn-sm btn-outline-primary">
                                                     <i class="bi bi-eye"></i> View
                                                 </a>
                                             </td>

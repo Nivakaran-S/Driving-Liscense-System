@@ -7,6 +7,7 @@ class DrivingTestSlot {
         $this->db = new Database();
     }
 
+    
     public function create($data) {
         $this->db->query('INSERT INTO driving_test_slots 
                          (slot_date, slot_time, evaluator_id, license_type, max_capacity, created_by) 

@@ -42,6 +42,8 @@ CREATE TABLE applications (
     medical_test_date DATETIME NULL,
     driving_test_date DATETIME NULL,
     license_issue_date DATETIME NULL,
+    medical_slot_id INT NULL,
+    driving_slot_id INT NULL,
     notes TEXT,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     INDEX idx_reference_id (reference_id),
@@ -81,7 +83,7 @@ CREATE TABLE driving_test_slots (
     FOREIGN KEY (created_by) REFERENCES users(user_id),
     INDEX idx_date (slot_date),
     INDEX idx_availability (is_available),
-    UNIQUE KEY unique_slot (slot_date, slot_time, evaluator_id)
+    UNIQUE KEY unique_slot (slot_date, slot_time, evaluator_id, license_type)
 );
 
 CREATE TABLE medical_evaluations (
@@ -100,7 +102,8 @@ CREATE TABLE medical_evaluations (
     FOREIGN KEY (application_id) REFERENCES applications(application_id) ON DELETE CASCADE,
     FOREIGN KEY (medical_officer_id) REFERENCES users(user_id),
     FOREIGN KEY (slot_id) REFERENCES medical_slots(slot_id),
-    INDEX idx_application (application_id)
+    INDEX idx_application (application_id),
+    INDEX idx_officer (medical_officer_id)
 );
 
 CREATE TABLE driving_evaluations (
@@ -120,7 +123,8 @@ CREATE TABLE driving_evaluations (
     FOREIGN KEY (application_id) REFERENCES applications(application_id) ON DELETE CASCADE,
     FOREIGN KEY (evaluator_id) REFERENCES users(user_id),
     FOREIGN KEY (slot_id) REFERENCES driving_test_slots(slot_id),
-    INDEX idx_application (application_id)
+    INDEX idx_application (application_id),
+    INDEX idx_evaluator (evaluator_id)
 );
 
 CREATE TABLE issued_licenses (
@@ -168,6 +172,6 @@ CREATE TABLE notifications (
     INDEX idx_read (is_read)
 );
 
-
+-- Insert default admin user (password: password)
 INSERT INTO users (username, email, password_hash, role, full_name, phone) 
 VALUES ('admin', 'admin@dls.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', 'System Administrator', '0771234567');

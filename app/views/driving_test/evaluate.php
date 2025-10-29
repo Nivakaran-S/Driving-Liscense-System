@@ -42,7 +42,7 @@ $data = $data ?? [];
                             
                             <form method="POST" action="<?php echo BASE_URL; ?>/driving/evaluate/<?php echo $application['application_id']; ?>" class="needs-validation" novalidate>
                                 <?php echo Session::csrfField(); ?>
-                                <input type="hidden" name="slot_id" value="1">
+                                <!-- Slot ID will be retrieved from application record -->
                                 
                                 <div class="alert alert-info">
                                     <i class="bi bi-info-circle"></i>
@@ -224,7 +224,6 @@ function updateScores() {
 scoreInputs.forEach(id => {
     document.getElementById(id).addEventListener('input', updateScores);
 });
-
 
 updateScores();
 </script>

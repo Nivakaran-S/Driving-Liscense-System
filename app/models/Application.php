@@ -120,14 +120,15 @@ class Application {
         return $this->db->execute();
     }
 
-
     public function scheduleMedicalTest($applicationId, $slotId, $testDate) {
         $this->db->query('UPDATE applications 
                          SET medical_test_date = :test_date, 
+                             medical_slot_id = :slot_id,
                              application_status = "medical_scheduled"
                          WHERE application_id = :app_id');
         
         $this->db->bind(':test_date', $testDate);
+        $this->db->bind(':slot_id', $slotId);
         $this->db->bind(':app_id', $applicationId);
         
         return $this->db->execute();
@@ -136,10 +137,12 @@ class Application {
     public function scheduleDrivingTest($applicationId, $slotId, $testDate) {
         $this->db->query('UPDATE applications 
                          SET driving_test_date = :test_date, 
+                             driving_slot_id = :slot_id,
                              application_status = "driving_test_scheduled"
                          WHERE application_id = :app_id');
         
         $this->db->bind(':test_date', $testDate);
+        $this->db->bind(':slot_id', $slotId);
         $this->db->bind(':app_id', $applicationId);
         
         return $this->db->execute();
@@ -196,7 +199,7 @@ class Application {
                          ms.slot_date, ms.slot_time, mo.full_name as medical_officer_name
                          FROM applications a
                          JOIN users u ON a.user_id = u.user_id
-                         LEFT JOIN medical_slots ms ON a.medical_test_date = CONCAT(ms.slot_date, " ", ms.slot_time)
+                         LEFT JOIN medical_slots ms ON a.medical_slot_id = ms.slot_id
                          LEFT JOIN users mo ON ms.medical_officer_id = mo.user_id
                          WHERE a.application_status = "medical_scheduled"
                          ORDER BY a.medical_test_date ASC');
@@ -209,7 +212,7 @@ class Application {
                          ds.slot_date, ds.slot_time, ev.full_name as evaluator_name
                          FROM applications a
                          JOIN users u ON a.user_id = u.user_id
-                         LEFT JOIN driving_test_slots ds ON a.driving_test_date = CONCAT(ds.slot_date, " ", ds.slot_time)
+                         LEFT JOIN driving_test_slots ds ON a.driving_slot_id = ds.slot_id
                          LEFT JOIN users ev ON ds.evaluator_id = ev.user_id
                          WHERE a.application_status = "driving_test_scheduled"
                          ORDER BY a.driving_test_date ASC');
@@ -225,5 +228,3 @@ class Application {
         return $this->db->execute();
     }
 }
-
-?>

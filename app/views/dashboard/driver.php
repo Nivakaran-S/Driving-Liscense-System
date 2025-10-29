@@ -56,8 +56,8 @@ include APP_ROOT . '/views/layouts/header.php';
                                 <hr>
                                 
                                 <div class="d-flex gap-2">
-                                    <a href="<?php echo BASE_URL; ?>/application/view/<?php echo $latestApplication['application_id']; ?>" 
-                                       class="btn btn-primary">
+                                    <a href="<?php echo BASE_URL; ?>/application/viewApplication/<?php echo $latestApplication['application_id']; ?>" 
+                                        class="btn btn-primary">
                                         <i class="bi bi-eye"></i> View Details
                                     </a>
                                     

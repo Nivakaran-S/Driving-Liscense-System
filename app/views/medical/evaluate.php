@@ -41,7 +41,7 @@ $data = $data ?? [];
                             
                             <form method="POST" action="<?php echo BASE_URL; ?>/medical/evaluate/<?php echo $application['application_id']; ?>" class="needs-validation" novalidate>
                                 <?php echo Session::csrfField(); ?>
-                                <input type="hidden" name="slot_id" value="1">
+                                <!-- Slot ID will be retrieved from application record -->
                                 
                                 <h5 class="mb-3">Test Results</h5>
                                 

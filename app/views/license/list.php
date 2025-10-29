@@ -128,8 +128,8 @@ include APP_ROOT . '/views/layouts/header.php';
                                             </td>
                                             <td>
                                                 <div class="btn-group btn-group-sm">
-                                                    <a href="<?php echo BASE_URL; ?>/license/view/<?php echo $license['license_id']; ?>" 
-                                                       class="btn btn-outline-primary" title="View">
+                                                    <a href="<?php echo BASE_URL; ?>/license/viewLicense/<?php echo $license['license_id']; ?>" 
+                                                        class="btn btn-outline-primary" title="View">
                                                         <i class="bi bi-eye"></i>
                                                     </a>
                                                     <a href="<?php echo BASE_URL; ?>/license/download/<?php echo $license['license_id']; ?>" 

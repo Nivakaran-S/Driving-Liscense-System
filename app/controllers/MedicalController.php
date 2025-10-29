@@ -39,7 +39,7 @@ class MedicalController extends BaseController {
             $data = [
                 'application_id' => $applicationId,
                 'medical_officer_id' => $user['user_id'],
-                'slot_id' => $this->sanitize($_POST['slot_id']),
+                'slot_id' => $application['medical_slot_id'] ?? 0,
                 'evaluation_date' => date('Y-m-d H:i:s'),
                 'vision_test' => $this->sanitize($_POST['vision_test']),
                 'hearing_test' => $this->sanitize($_POST['hearing_test']),
@@ -63,7 +63,6 @@ class MedicalController extends BaseController {
                 $evaluationId = $this->medicalEvaluationModel->create($data);
                 
                 if ($evaluationId) {
-            
                     $notificationModel = new Notification();
                     $overallResult = ($data['vision_test'] === 'pass' && 
                                     $data['hearing_test'] === 'pass' && 
@@ -88,7 +87,7 @@ class MedicalController extends BaseController {
         }
     }
     
-    public function view($evaluationId) {
+    public function viewEvaluation($evaluationId) {
         $this->requireAuth();
         
         $evaluation = $this->medicalEvaluationModel->getById($evaluationId);
@@ -137,6 +136,8 @@ class MedicalController extends BaseController {
         $user = $this->getCurrentUser();
         $role = Auth::getRole();
         
+        $data = [];
+        
         if ($role === 'medical_officer') {
             $evaluations = $this->medicalEvaluationModel->getByOfficer($user['user_id'], $filters);
         } elseif ($role === 'admin') {
@@ -160,4 +161,3 @@ class MedicalController extends BaseController {
         $this->view('medical/list', $data);
     }
 }
-?>

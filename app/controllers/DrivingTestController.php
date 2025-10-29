@@ -11,7 +11,6 @@ class DrivingTestController extends BaseController {
         $this->licenseModel = new License();
     }
     
-    
     public function evaluate($applicationId) {
         $this->requireAuth();
         $this->requireRole('evaluator');
@@ -30,7 +29,6 @@ class DrivingTestController extends BaseController {
             return;
         }
         
-    
         if ($this->drivingEvaluationModel->isEvaluated($applicationId)) {
             $this->setFlash('error', 'This application has already been evaluated');
             $this->redirect('dashboard/evaluator');
@@ -43,7 +41,7 @@ class DrivingTestController extends BaseController {
             $data = [
                 'application_id' => $applicationId,
                 'evaluator_id' => $user['user_id'],
-                'slot_id' => $this->sanitize($_POST['slot_id']),
+                'slot_id' => $application['driving_slot_id'] ?? 0,
                 'evaluation_date' => date('Y-m-d H:i:s'),
                 'vehicle_control_score' => (int)$this->sanitize($_POST['vehicle_control_score']),
                 'traffic_rules_score' => (int)$this->sanitize($_POST['traffic_rules_score']),
@@ -52,7 +50,6 @@ class DrivingTestController extends BaseController {
                 'remarks' => $this->sanitize($_POST['remarks'])
             ];
             
-    
             $errors = [];
             foreach (['vehicle_control_score', 'traffic_rules_score', 'parking_score', 'road_safety_score'] as $field) {
                 if ($data[$field] < 0 || $data[$field] > 100) {
@@ -64,7 +61,6 @@ class DrivingTestController extends BaseController {
                 $evaluationId = $this->drivingEvaluationModel->create($data);
                 
                 if ($evaluationId) {
-    
                     $overallScore = round(
                         ($data['vehicle_control_score'] + 
                          $data['traffic_rules_score'] + 
@@ -74,7 +70,6 @@ class DrivingTestController extends BaseController {
                     
                     $result = ($overallScore >= PASSING_SCORE) ? 'passed' : 'failed';
                     
-    
                     if ($result === 'passed') {
                         $this->licenseModel->issueTemporaryLicense(
                             $applicationId, 
@@ -83,7 +78,6 @@ class DrivingTestController extends BaseController {
                         );
                     }
                     
-    
                     $notificationModel = new Notification();
                     $message = "Your driving test has been evaluated. Score: $overallScore/100. Result: " . strtoupper($result);
                     $notificationModel->create($application['user_id'], $message, 
@@ -104,8 +98,7 @@ class DrivingTestController extends BaseController {
         }
     }
     
-    
-    public function view($evaluationId) {
+    public function viewEvaluation($evaluationId) {
         $this->requireAuth();
         
         $evaluation = $this->drivingEvaluationModel->getById($evaluationId);
@@ -119,7 +112,6 @@ class DrivingTestController extends BaseController {
         $user = $this->getCurrentUser();
         $role = Auth::getRole();
         
-    
         if ($role === 'evaluator' && $evaluation['evaluator_id'] != $user['user_id']) {
             $this->setFlash('error', 'Access denied');
             $this->redirect('dashboard/evaluator');
@@ -158,6 +150,8 @@ class DrivingTestController extends BaseController {
         $user = $this->getCurrentUser();
         $role = Auth::getRole();
         
+        $data = [];
+        
         if ($role === 'evaluator') {
             $evaluations = $this->drivingEvaluationModel->getByEvaluator($user['user_id'], $filters);
         } elseif ($role === 'admin') {
@@ -165,7 +159,6 @@ class DrivingTestController extends BaseController {
                 $filters['evaluator_id'] = $this->sanitize($_GET['evaluator_id']);
             }
             $evaluations = $this->drivingEvaluationModel->getAll($filters);
-            
             
             $userModel = new User();
             $evaluators = $userModel->getUsersByRole('evaluator');
@@ -182,4 +175,3 @@ class DrivingTestController extends BaseController {
         $this->view('driving_test/list', $data);
     }
 }
-?>

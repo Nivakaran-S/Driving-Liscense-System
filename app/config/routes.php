@@ -17,38 +17,33 @@ $routes = [
     'dashboard/medical' => 'DashboardController@medical',
     'dashboard/evaluator' => 'DashboardController@evaluator',
     
-    
     'application/create' => 'ApplicationController@create',
-    'application/view/:id' => 'ApplicationController@view',
+    'application/viewApplication/:id' => 'ApplicationController@viewApplication',
     'application/list' => 'ApplicationController@list',
-    'application/book-medical/:id' => 'ApplicationController@bookMedicalSlot',
-    'application/book-driving/:id' => 'ApplicationController@bookDrivingSlot',
-    
+    'application/bookMedicalSlot/:id' => 'ApplicationController@bookMedicalSlot',
+    'application/bookDrivingSlot/:id' => 'ApplicationController@bookDrivingSlot',
     
     'medical/evaluate/:id' => 'MedicalController@evaluate',
-    'medical/view/:id' => 'MedicalController@view',
+    'medical/viewEvaluation/:id' => 'MedicalController@viewEvaluation',
     'medical/list' => 'MedicalController@list',
     
-    
     'driving/evaluate/:id' => 'DrivingTestController@evaluate',
-    'driving/view/:id' => 'DrivingTestController@view',
+    'driving/viewEvaluation/:id' => 'DrivingTestController@viewEvaluation',
     'driving/list' => 'DrivingTestController@list',
     
-    
-    'license/view/:id' => 'LicenseController@view',
+    'license/viewLicense/:id' => 'LicenseController@viewLicense',
     'license/download/:id' => 'LicenseController@download',
     'license/list' => 'LicenseController@list',
     'license/verify' => 'LicenseController@verify',
     
     'slot/medical' => 'SlotController@medical',
-    'slot/medical/create' => 'SlotController@createMedical',
-    'slot/medical/delete/:id' => 'SlotController@deleteMedical',
-    'slot/medical/toggle/:id' => 'SlotController@toggleMedical',
+    'slot/createMedical' => 'SlotController@createMedical',
+    'slot/deleteMedical/:id' => 'SlotController@deleteMedical',
+    'slot/toggleMedical/:id' => 'SlotController@toggleMedical',
     'slot/driving' => 'SlotController@driving',
-    'slot/driving/create' => 'SlotController@createDriving',
-    'slot/driving/delete/:id' => 'SlotController@deleteDriving',
-    'slot/driving/toggle/:id' => 'SlotController@toggleDriving',
+    'slot/createDriving' => 'SlotController@createDriving',
+    'slot/deleteDriving/:id' => 'SlotController@deleteDriving',
+    'slot/toggleDriving/:id' => 'SlotController@toggleDriving',
 ];
 
 return $routes;
-?>

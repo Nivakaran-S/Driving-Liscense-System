@@ -47,7 +47,7 @@ class Auth {
     public static function requireRole($role) {
         self::requireLogin();
         if (!self::hasRole($role)) {
-            $_SESSION['error'] = 'Access denied. Insufficient permissions';
+            $_SESSION['flash_error'] = 'Access denied. Insufficient permissions';
             self::redirectToDashboard();
         }
     }
@@ -100,5 +100,3 @@ class Auth {
         exit();
     }
 }
-
-?>

@@ -119,7 +119,7 @@ include APP_ROOT . '/views/layouts/header.php';
                                    class="btn btn-primary w-100 mb-2">
                                     <i class="bi bi-download"></i> Download License
                                 </a>
-                                <a href="<?php echo BASE_URL; ?>/license/view/<?php echo $license['license_id']; ?>" 
+                                <a href="<?php echo BASE_URL; ?>/license/viewLicense/<?php echo $license['license_id']; ?>" 
                                    class="btn btn-outline-primary w-100 mb-2">
                                     <i class="bi bi-eye"></i> View License
                                 </a>
@@ -151,6 +151,12 @@ include APP_ROOT . '/views/layouts/header.php';
                                         <span class="badge <?php echo $medicalEvaluation['overall_result'] == 'pass' ? 'bg-success' : 'bg-danger'; ?> fs-6">
                                             <?php echo strtoupper($medicalEvaluation['overall_result']); ?>
                                         </span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <a href="<?php echo BASE_URL; ?>/medical/viewEvaluation/<?php echo $medicalEvaluation['evaluation_id']; ?>" 
+                                           class="btn btn-sm btn-outline-primary w-100">
+                                            <i class="bi bi-eye"></i> View Full Details
+                                        </a>
                                     </div>
                                 </div>
                                 <hr>
@@ -201,21 +207,27 @@ include APP_ROOT . '/views/layouts/header.php';
                                         <strong>Evaluation Date:</strong><br>
                                         <?php echo date('F d, Y H:i', strtotime($drivingEvaluation['evaluation_date'])); ?>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <strong>Evaluator:</strong><br>
                                         <?php echo $drivingEvaluation['evaluator_name']; ?>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <strong>Overall Score:</strong><br>
                                         <div class="score-display <?php echo $drivingEvaluation['result'] == 'pass' ? 'score-pass' : 'score-fail'; ?>">
                                             <?php echo $drivingEvaluation['overall_score']; ?>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <strong>Result:</strong><br>
                                         <span class="badge <?php echo $drivingEvaluation['result'] == 'pass' ? 'bg-success' : 'bg-danger'; ?> fs-6">
                                             <?php echo strtoupper($drivingEvaluation['result']); ?>
                                         </span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <a href="<?php echo BASE_URL; ?>/driving/viewEvaluation/<?php echo $drivingEvaluation['evaluation_id']; ?>" 
+                                           class="btn btn-sm btn-outline-primary w-100">
+                                            <i class="bi bi-eye"></i> View Full Details
+                                        </a>
                                     </div>
                                 </div>
                                 <hr>

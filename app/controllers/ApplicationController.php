@@ -11,12 +11,7 @@ class ApplicationController extends BaseController {
         $this->drivingSlotModel = new DrivingTestSlot();
     }
     
-    
     public function create() {
-        // echo "User logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO') . "<br>";
-        // echo "User role: " . Auth::getRole() . "<br>";
-        // echo "User info: <pre>" . print_r(Auth::getUser(), true) . "</pre>";
-        // exit; 
         $this->requireAuth();
         $this->requireRole('driver');
         
@@ -50,7 +45,6 @@ class ApplicationController extends BaseController {
             $this->view('applications/create');
         }
     }
-    
     
     public function viewApplication($applicationId) {
         $this->requireAuth();
@@ -246,4 +240,3 @@ class ApplicationController extends BaseController {
         }
     }
 }
-?>
