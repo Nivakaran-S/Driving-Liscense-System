@@ -8,7 +8,7 @@ class AuthMiddleware {
             
     
             Session::setFlash('error', 'Please login to continue');
-            
+    
     
             header('Location: ' . BASE_URL . '/auth/login');
             exit();

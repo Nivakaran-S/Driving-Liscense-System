@@ -13,12 +13,15 @@ class ApplicationController extends BaseController {
     
     
     public function create() {
+        // echo "User logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO') . "<br>";
+        // echo "User role: " . Auth::getRole() . "<br>";
+        // echo "User info: <pre>" . print_r(Auth::getUser(), true) . "</pre>";
+        // exit; 
         $this->requireAuth();
         $this->requireRole('driver');
         
         $user = $this->getCurrentUser();
         
-    
         if ($this->applicationModel->hasPendingApplication($user['user_id'])) {
             $this->setFlash('error', 'You already have a pending application');
             $this->redirect('dashboard/driver');
@@ -38,7 +41,7 @@ class ApplicationController extends BaseController {
             
             if ($result) {
                 $this->setFlash('success', 'Application submitted successfully! Reference ID: ' . $result['reference_id']);
-                $this->redirect('application/view/' . $result['application_id']);
+                $this->redirect('application/viewApplication/' . $result['application_id']);
             } else {
                 $this->setFlash('error', 'Failed to submit application');
                 $this->view('applications/create');
@@ -48,7 +51,8 @@ class ApplicationController extends BaseController {
         }
     }
     
-    public function view($applicationId) {
+    
+    public function viewApplication($applicationId) {
         $this->requireAuth();
         
         $application = $this->applicationModel->getById($applicationId);
@@ -93,7 +97,6 @@ class ApplicationController extends BaseController {
             $user = $this->getCurrentUser();
             $applications = $this->applicationModel->getByUserId($user['user_id']);
         } else {
-    
             if (isset($_GET['status'])) {
                 $filters['status'] = $this->sanitize($_GET['status']);
             }
@@ -129,7 +132,7 @@ class ApplicationController extends BaseController {
         
         if ($application['application_status'] !== 'submitted') {
             $this->setFlash('error', 'Medical test slot cannot be booked at this stage');
-            $this->redirect('application/view/' . $applicationId);
+            $this->redirect('application/viewApplication/' . $applicationId);
             return;
         }
         
@@ -155,7 +158,7 @@ class ApplicationController extends BaseController {
                 
                 if ($this->applicationModel->scheduleMedicalTest($applicationId, $slotId, $testDateTime)) {
                     $this->setFlash('success', 'Medical test slot booked successfully');
-                    $this->redirect('application/view/' . $applicationId);
+                    $this->redirect('application/viewApplication/' . $applicationId);
                 } else {
                     $this->medicalSlotModel->cancelBooking($slotId);
                     $this->setFlash('error', 'Failed to book slot');
@@ -197,7 +200,7 @@ class ApplicationController extends BaseController {
         
         if ($application['application_status'] !== 'medical_passed') {
             $this->setFlash('error', 'Driving test slot can only be booked after passing medical test');
-            $this->redirect('application/view/' . $applicationId);
+            $this->redirect('application/viewApplication/' . $applicationId);
             return;
         }
         
@@ -223,7 +226,7 @@ class ApplicationController extends BaseController {
                 
                 if ($this->applicationModel->scheduleDrivingTest($applicationId, $slotId, $testDateTime)) {
                     $this->setFlash('success', 'Driving test slot booked successfully');
-                    $this->redirect('application/view/' . $applicationId);
+                    $this->redirect('application/viewApplication/' . $applicationId);
                 } else {
                     $this->drivingSlotModel->cancelBooking($slotId);
                     $this->setFlash('error', 'Failed to book slot');

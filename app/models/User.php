@@ -8,38 +8,41 @@ class User {
     }
 
     public function register($data) {
-        try {
-            $this->db->beginTransaction();
+    try {
+        $this->db->beginTransaction();
 
-            $this->db->query("INSERT INTO users (username, email, password_hash, role, full_name, phone) VALUES (:username, :email, :password, :role, :full_name, :phone)");
-            $this->db->bind(':username', $data['username']);
-            $this->db->bind(':email', $data['email']);
-            $this->db->bind(':password', password_hash($data['password'], PASSWORD_DEFAULT));
-            $this->db->bind(':role', 'driver');
-            $this->db->bind(':full_name', $data['full_name']);
-            $this->db->bind(':phone', $data['phone']);
+        $this->db->query("INSERT INTO users (username, email, password_hash, role, full_name, phone) 
+                         VALUES (:username, :email, :password, :role, :full_name, :phone)");
+        $this->db->bind(':username', $data['username']);
+        $this->db->bind(':email', $data['email']);
+        $this->db->bind(':password', password_hash($data['password'], PASSWORD_DEFAULT));
+        $this->db->bind(':role', 'driver');
+        $this->db->bind(':full_name', $data['full_name']);
+        $this->db->bind(':phone', $data['phone']);
 
-            $this->db->query("INSERT INTO driver_profiles (user_id, date_of_birth, address, city, postal_code, national_id, license_type) 
-                  VALUES (:user_id, :dob, :address, :city, :postal_code, :national_id, :license_type)");
-                  
-            $this->db->execute();
-            $userId = $this->db->lastInsertId();
+        $this->db->execute();
+        $userId = $this->db->lastInsertId();
 
-            $this->db->bind(':user_id', $userId);
-            $this->db->bind(':dob', $data['date_of_birth']);
-            $this->db->bind(':address', $data['address']);
-            $this->db->bind(':city', $data['city']);
-            $this->db->bind(':postal_code', $data['postal_code']);
-            $this->db->bind(':national_id', $data['national_id']);
-            $this->db->bind(':license_type', $data['license_type']);
+        $this->db->query("INSERT INTO driver_profiles (user_id, date_of_birth, address, city, postal_code, national_id, license_type) 
+                         VALUES (:user_id, :dob, :address, :city, :postal_code, :national_id, :license_type)");
+        
+        $this->db->bind(':user_id', $userId);
+        $this->db->bind(':dob', $data['date_of_birth']);
+        $this->db->bind(':address', $data['address']);
+        $this->db->bind(':city', $data['city']);
+        $this->db->bind(':postal_code', $data['postal_code']);
+        $this->db->bind(':national_id', $data['national_id']);
+        $this->db->bind(':license_type', $data['license_type']);
 
-            $this->db->execute();
-            return $userId;
-        } catch(Exception $e) {
-            $this->db->rollback();
-            return false;
-        }
+        $this->db->execute();
+        
+        $this->db->commit();
+        return $userId;
+    } catch(Exception $e) {
+        $this->db->rollback();
+        return false;
     }
+}
 
 
     public function login($username, $password) {

@@ -13,10 +13,17 @@ include APP_ROOT . '/views/layouts/header.php';
                     Our streamlined process makes it easy to get licensed quickly and efficiently.
                 </p>
                 <div class="d-grid gap-2 d-md-flex">
-                    <a href="<?php echo BASE_URL; ?>/auth/register" class="btn btn-light btn-lg px-4">
-                        <i class="bi bi-person-plus"></i> Get Started
-                    </a>
-                    <a href="<?php echo BASE_URL; ?>/public/checkStatus" class="btn btn-outline-light btn-lg px-4">
+                    <?php if (Auth::isLoggedIn()): ?>
+                        <a href="<?php echo BASE_URL; ?>/application/create" class="btn btn-light btn-lg px-4">
+                            <i class="bi bi-plus-circle"></i> Submit Application
+                        </a>
+                    <?php else: ?>
+                        <a href="<?php echo BASE_URL; ?>/register" class="btn btn-light btn-lg px-4">
+                            <i class="bi bi-person-plus"></i> Get Started
+                        </a>
+                    <?php endif; ?>
+                    
+                    <a href="<?php echo BASE_URL; ?>/check-status" class="btn btn-outline-light btn-lg px-4">
                         <i class="bi bi-search"></i> Check Status
                     </a>
                 </div>
@@ -155,9 +162,16 @@ include APP_ROOT . '/views/layouts/header.php';
     <div class="container text-center">
         <h2 class="mb-4">Ready to Get Your License?</h2>
         <p class="lead mb-4">Join thousands of satisfied drivers who got their license through our platform</p>
-        <a href="<?php echo BASE_URL; ?>/auth/register" class="btn btn-light btn-lg px-5">
-            <i class="bi bi-arrow-right-circle"></i> Start Your Application
-        </a>
+        
+        <?php if (Auth::isLoggedIn()): ?>
+            <a href="<?php echo BASE_URL; ?>/application/create" class="btn btn-light btn-lg px-5">
+                <i class="bi bi-plus-circle"></i> Submit Your Application
+            </a>
+        <?php else: ?>
+            <a href="<?php echo BASE_URL; ?>/register" class="btn btn-light btn-lg px-5">
+                <i class="bi bi-arrow-right-circle"></i> Start Your Application
+            </a>
+        <?php endif; ?>
     </div>
 </div>
 

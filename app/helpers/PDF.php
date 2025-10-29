@@ -3,42 +3,7 @@
 class PDF {
     
     public static function generateLicense($license, $download = true) {
-        // Check if TCPDF is available
-        if (class_exists('TCPDF')) {
-            return self::generateWithTCPDF($license, $download);
-        } else {
-            return self::generateSimpleHTML($license, $download);
-        }
-    }
-    
-    private static function generateWithTCPDF($license, $download) {
-        $pdf = new TCPDF('L', PDF_UNIT, 'A4', true, 'UTF-8', false);
-        
-        $pdf->SetCreator(APP_NAME);
-        $pdf->SetAuthor(APP_NAME);
-        $pdf->SetTitle('Driving License - ' . $license['license_number']);
-        
-        $pdf->setPrintHeader(false);
-        $pdf->setPrintFooter(false);
-        
-        $pdf->SetMargins(15, 15, 15);
-        $pdf->AddPage();
-        $pdf->SetFont('helvetica', '', 10);
-        
-        $html = self::getLicenseHTML($license);
-        $pdf->writeHTML($html, true, false, true, false, '');
-        
-        $filename = 'License_' . $license['license_number'] . '.pdf';
-        
-        if ($download) {
-            $pdf->Output($filename, 'D');
-        } else {
-            $filepath = LICENSE_UPLOAD_PATH . $filename;
-            $pdf->Output($filepath, 'F');
-            return $filename;
-        }
-        
-        exit();
+        return self::generateSimpleHTML($license, $download);
     }
     
     private static function generateSimpleHTML($license, $download) {
@@ -60,6 +25,8 @@ class PDF {
         $expiryDate = date('F d, Y', strtotime($license['expiry_date']));
         $licenseStatus = $license['is_temporary'] ? 'TEMPORARY' : 'PERMANENT';
         $currentDate = date('F d, Y H:i:s');
+        $appName = APP_NAME;
+        $baseUrl = BASE_URL;
         
         $html = <<<HTML
 <!DOCTYPE html>
@@ -174,7 +141,7 @@ class PDF {
 <body>
     <div class="license-container">
         <div class="license-header">
-            <h1>{$_ENV['APP_NAME'] ?? 'Driving License System'}</h1>
+            <h1>{$appName}</h1>
             <h2>DRIVING LICENSE</h2>
             <p>Democratic Socialist Republic of Sri Lanka</p>
         </div>
@@ -225,7 +192,7 @@ class PDF {
             </div>
             
             <div class="notice-box">
-                <h3>⚠️ Important Notice</h3>
+                <h3>Important Notice</h3>
                 <ul>
                     <li>This is a TEMPORARY driving license valid for 6 months from the date of issue.</li>
                     <li>The permanent license card will be mailed to your registered address within 30 days.</li>
@@ -240,7 +207,7 @@ class PDF {
         <div class="footer">
             <p><strong>This is a computer-generated document. No signature required.</strong></p>
             <p>Generated on: {$currentDate} | Verification Code: {$license['license_number']}</p>
-            <p>For verification, visit: {$_ENV['BASE_URL'] ?? 'http://localhost'}/license/verify</p>
+            <p>For verification, visit: {$baseUrl}/license/verify</p>
         </div>
     </div>
 </body>
@@ -251,6 +218,7 @@ HTML;
     }
     
     public static function generateReceipt($data) {
+        // Placeholder for future implementation
     }
 }
 ?>

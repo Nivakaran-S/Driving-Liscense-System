@@ -40,7 +40,7 @@ include APP_ROOT . '/views/layouts/header.php';
                         
                         <div class="col-md-2">
                             <label for="date_from" class="form-label">From Date</label>
-                            <input type="date" class="form-select" id="date_from" name="date_from" 
+                            <input type="date" class="form-control" id="date_from" name="date_from" 
                                    value="<?php echo $filters['date_from'] ?? ''; ?>">
                         </div>
                         

@@ -75,10 +75,10 @@ class Auth {
 
     public static function login($userData) {
         $_SESSION['user_id'] = $userData['user_id'];
-        $SESSION['username'] = $userData['username'];
-        $SESSION['email'] = $userData['email'];
-        $SESSION['role'] = $userData['role'];
-        $SESSION['full_name'] = $userData['full_name'];
+        $_SESSION['username'] = $userData['username'];
+        $_SESSION['email'] = $userData['email'];
+        $_SESSION['role'] = $userData['role'];
+        $_SESSION['full_name'] = $userData['full_name'];
 
         session_regenerate_id(true);
         return true;
